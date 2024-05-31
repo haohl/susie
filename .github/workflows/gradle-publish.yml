@@ -21,10 +21,6 @@ on:
         - info
         - warning
         - debug
-      environment:
-        description: 'Environment to run workflow'
-        type: environment
-        required: true
 
 jobs:
   build:
