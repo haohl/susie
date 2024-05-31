@@ -5,6 +5,14 @@ plugins {
 
 version = '0.0.1'
 
+javadoc {
+    exclude 'xyz/haofamily/susie/content/local/**', 'xyz/haofamily/susie/content/oss/**'
+}
+
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
 dependencyManagement {
   imports {
     mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"

@@ -8,3 +8,32 @@ ext {
   minioVersion = '8.5.10'
   testcontainersVersion = '1.19.8'
 }
+
+subprojects {
+  pluginManager.withPlugin("java-library") {
+    apply plugin: 'maven-publish'
+
+    java {
+      withSourcesJar()
+      withJavadocJar()
+    }
+
+    publishing {
+      repositories {
+        maven {
+          name = "GitHubPackages"
+          url = uri("https://maven.pkg.github.com/haohl/susie")
+          credentials {
+              username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+              password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+          }
+        }
+      }
+      publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+      }
+    }
+  }
+}

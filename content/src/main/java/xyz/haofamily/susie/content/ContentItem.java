@@ -14,10 +14,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 
 /**
+ * <p>
+ * ContentItem
+ * </p>
  * 
+ * Represent the content itself, which can be a file, a text, etc.
  * 
  * @author Hualei Hao
- * @date 2024-05-20
  */
 @Entity
 public class ContentItem {
@@ -40,7 +43,7 @@ public class ContentItem {
   private String filename;
 
   private long fileSize;
-  
+
   private String mimeType;
 
   private String storageLocation;

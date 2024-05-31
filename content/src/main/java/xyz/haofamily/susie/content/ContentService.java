@@ -21,8 +21,9 @@ import org.springframework.stereotype.Service;
  * ContentService
  * </p>
  * 
+ * Provide the service to store and retrieve content.
+ * 
  * @author Hualei Hao
- * @date 2024-05-22
  */
 @Service
 public class ContentService {
@@ -38,6 +39,12 @@ public class ContentService {
     this.contentStorageService = contentStorageService;
   }
 
+  /**
+   * Fetch the content by item.
+   * 
+   * @param item The content item.
+   * @return The content input stream.
+   */
   public InputStream getContentStream(@NonNull ContentItem item) {
     try {
       return this.contentStorageService.fetch(item.getStorageLocation());
@@ -46,6 +53,16 @@ public class ContentService {
     }
   }
 
+  /**
+   * Store the content and return the content item.
+   * 
+   * When you need process multiple items, you can use this method to store them
+   * first, and then add/set them to a content holder.
+   * 
+   * @param type     The content type.
+   * @param resource The content resource.
+   * @return The content item.
+   */
   public ContentItem storeContentStream(ContentItemType type, @NonNull Resource resource) {
     ContentItem item = new ContentItem();
     item.setType(type);
@@ -70,6 +87,15 @@ public class ContentService {
     return item;
   }
 
+  /**
+   * Set the content to the holder.
+   * 
+   * This method will store the content holder to the database. If the holder
+   * already stored in the database, it will update the holder.
+   * 
+   * @param contentHolder The content holder.
+   * @param resource      The content resource.
+   */
   public void setContent(@NonNull ContentHolder contentHolder, @NonNull Resource resource) {
     Collection<ContentItem> items = contentHolder.getContents();
     if (items.isEmpty() || items.stream().noneMatch(item -> item.getType() == ContentItemType.Primary)) {
@@ -79,6 +105,16 @@ public class ContentService {
     }
   }
 
+  /**
+   * Set the content to the holder.
+   * 
+   * This method will store the content holder to the database. If the holder
+   * already stored in the database, it will update the holder.
+   * 
+   * @param contentHolder The content holder.
+   * @param type          The content type.
+   * @param resource      The content resource.
+   */
   public void setContent(@NonNull ContentHolder contentHolder, ContentItemType type, @NonNull Resource resource) {
     ContentItem item = new ContentItem();
     item.setType(type);

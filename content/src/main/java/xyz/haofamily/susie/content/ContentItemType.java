@@ -2,12 +2,12 @@ package xyz.haofamily.susie.content;
 
 /**
  * 
- * <p>
+ * <p>ContentItemType</p>
  * 
- * </p>
+ * Design for the holder that may have multiple content items.
+ * For example, a contract may have a primary content and multiple appendixes.
  * 
  * @author Hualei Hao
- * @date 2024-05-20
  */
 public enum ContentItemType {
   Primary,

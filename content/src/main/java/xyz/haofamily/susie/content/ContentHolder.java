@@ -21,10 +21,10 @@ import java.util.stream.StreamSupport;
  * {@literal @}OneToMany(cascade = { CascadeType.PERSIST, CascadeType.REMOVE,
  *    CascadeType.REFRESH }, fetch = FetchType.LAZY, mappedBy = "contentHolder")
  * {@literal @}Transient
- * private Collection<ContentItem> contents = new ArrayList<>();
+ * private Collection&lt;ContentItem&gt; contents = new ArrayList&lt;&gt;();
  * 
  * {@literal @}Override
- * public Collection<ContentItem> getContents() {
+ * public Collection&lt;ContentItem&gt; getContents() {
  *   return this.contents;
  * }
  * 
@@ -33,9 +33,11 @@ import java.util.stream.StreamSupport;
  * </code>
  * </pre>
  * 
+ * Please notice that the method getContents must return the same collection,
+ * otherwise you need implement the addContents and setContents methods
+ * yourself.
  * 
  * @author Hualei Hao
- * @date 2024-05-20
  */
 public interface ContentHolder {
 
