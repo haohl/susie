@@ -10,6 +10,21 @@ name: Gradle Package
 on:
   release:
     types: [created]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      environment:
+        description: 'Environment to run workflow'
+        type: environment
+        required: true
 
 jobs:
   build:
