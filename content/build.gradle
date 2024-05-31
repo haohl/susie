@@ -1,0 +1,22 @@
+plugins {
+  id 'java-library'
+  id 'io.spring.dependency-management' version "${springDependencyManagementVersion}"
+}
+
+version = '0.0.1'
+
+dependencyManagement {
+  imports {
+    mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+  }
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation group: 'io.minio', name: 'minio', version: minioVersion
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation group: 'org.testcontainers', name: 'testcontainers', version: testcontainersVersion
+  testImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: testcontainersVersion
+  testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+  testRuntimeOnly 'com.h2database:h2'
+}

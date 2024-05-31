@@ -1,0 +1,10 @@
+plugins {
+  id("com.diffplug.spotless") version "6.25.0"
+}
+
+ext {
+  springBootVersion = '3.2.5'
+  springDependencyManagementVersion = '1.1.4'
+  minioVersion = '8.5.10'
+  testcontainersVersion = '1.19.8'
+}

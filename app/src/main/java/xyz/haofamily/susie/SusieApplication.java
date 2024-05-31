@@ -1,0 +1,13 @@
+package xyz.haofamily.susie;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SusieApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(SusieApplication.class, args);
+	}
+
+}
