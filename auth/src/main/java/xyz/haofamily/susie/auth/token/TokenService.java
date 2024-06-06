@@ -38,7 +38,6 @@ public class TokenService {
     RefreshToken refreshToken = new RefreshToken();
     refreshToken.setValue(UUID.randomUUID().toString());
     refreshToken.setExpiration(expiration(now, this.properties.getToken().getRefreshTtl()));
-    this.refreshTokenRepository.save(refreshToken);
 
     AccessToken accessToken = AccessToken.from(parameters);
     accessToken.setTokenType(this.properties.getToken().getType());
