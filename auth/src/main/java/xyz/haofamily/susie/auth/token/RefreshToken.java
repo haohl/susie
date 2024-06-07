@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,11 +26,16 @@ public class RefreshToken {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@JsonIgnore
 	private Long id;
-
+	
+	@Column(name = "token")
 	private String value;
 
-  @JsonIgnore
-  private Date expiration;
+	@JsonIgnore
+	private Date expiration;
+
+	public Long getId() {
+		return id;
+	}
 
 	public String getValue() {
 		return value;

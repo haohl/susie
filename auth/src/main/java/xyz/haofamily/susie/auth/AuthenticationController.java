@@ -38,7 +38,7 @@ public class AuthenticationController {
     this.ctx = ctx;
   }
 
-  @PostMapping(value = "/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+  @PostMapping(value = "/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<?> createToken(@RequestParam Map<String, String> parameters) {
     logger.debug("Create token with parameters: {}", parameters);
     String grantType = parameters.get("grant_type");

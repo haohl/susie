@@ -1,17 +1,14 @@
 package xyz.haofamily.susie.user;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
-@Component("JDBC")
-@ConditionalOnMissingBean(name = "JDBC", value = AuthenticationProvider.class)
 public class JpaAuthenticationProvider implements AuthenticationProvider {
 
   private BasicUserRepository repository;
@@ -36,6 +33,9 @@ public class JpaAuthenticationProvider implements AuthenticationProvider {
         .orElseThrow(() -> new UsernameNotFoundException(String.format("User[%s] not found.", username)));
     if (authentication.getCredentials() == null) {
       throw new BadCredentialsException("Credentials is empty");
+    }
+    if (user.isDisabled()) {
+      throw new DisabledException("User is disabled");
     }
     String presentedPassword = authentication.getCredentials().toString();
     if (!this.passwordEncoder.matches(presentedPassword, user.getPassword())) {

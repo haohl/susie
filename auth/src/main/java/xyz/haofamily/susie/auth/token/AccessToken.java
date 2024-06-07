@@ -7,9 +7,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,6 +37,7 @@ public class AccessToken {
   private Long id;
 
   @JsonProperty("access_token")
+  @Column(name = "token")
   private String value;
 
   @JsonProperty("token_type")
@@ -48,6 +51,7 @@ public class AccessToken {
   @JsonIgnore
   private RefreshToken refreshToken;
 
+  @JsonInclude(JsonInclude.Include.NON_EMPTY)
   private Set<String> scope;
 
   @JsonIgnore
@@ -71,7 +75,7 @@ public class AccessToken {
 
   @JsonProperty("expires_in")
   public long getExpiresIn() {
-    return (expiration.getTime() - System.currentTimeMillis()) / 1000;
+    return (expiration.getTime() - System.currentTimeMillis()) / 1000 + 1;
   }
 
   @JsonProperty("refresh_token")

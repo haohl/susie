@@ -1,5 +1,6 @@
 package xyz.haofamily.susie.auth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,9 +12,9 @@ public class AuthenticationConfigProperties {
 
   private AuthenticationType type;
 
-  private List<AuthenticationProviderType> providers;
+  private List<AuthenticationProviderType> providers = new ArrayList<>();
 
-  private TokenConfig token;
+  private TokenConfig token = new TokenConfig();
 
   public AuthenticationType getType() {
     return type;
