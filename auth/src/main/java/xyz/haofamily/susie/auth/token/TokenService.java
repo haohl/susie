@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import xyz.haofamily.susie.auth.AuthenticationConfigProperties;
 import xyz.haofamily.susie.auth.AuthenticationType;
 
@@ -30,6 +29,8 @@ public class TokenService {
   private AuthenticationConfigProperties properties;
   private AccessTokenRepository accessTokenRepository;
   private RefreshTokenRepository refreshTokenRepository;
+
+  private AdditionalClaimsProvider additionalClaimsProvider;
   private Key jwtKey;
 
   public TokenService(AuthenticationConfigProperties properties, AccessTokenRepository accessTokenRepository,
@@ -66,18 +67,20 @@ public class TokenService {
     this.jwtKey = jwtKey;
   }
 
+  @Autowired(required = false)
+  public void setAdditionalClaimsProvider(AdditionalClaimsProvider additionalClaimsProvider) {
+    this.additionalClaimsProvider = additionalClaimsProvider;
+  }
+
   private String jwtTokenValue(Authentication authentication, Date now, Date expiration) {
     JwtBuilder builder = Jwts.builder().header().type("JWT").and()
         .issuer(this.properties.getToken().getJwt().getIssuer())
         .subject(authentication.getName())
         .issuedAt(now)
-        .expiration(expiration);
-    switch (this.properties.getToken().getJwt().getAlg()) {
-      case AuthenticationConfigProperties.JwtSignAlg.RSA:
-        builder.signWith(jwtKey);
-        break;
-      default:
-        builder.signWith(Keys.hmacShaKeyFor(this.properties.getToken().getJwt().getSecret().getBytes()));
+        .expiration(expiration)
+        .signWith(jwtKey);
+    if (this.additionalClaimsProvider != null) {
+      builder.claims(this.additionalClaimsProvider.getClaims(authentication));
     }
     return builder.compact();
   }
