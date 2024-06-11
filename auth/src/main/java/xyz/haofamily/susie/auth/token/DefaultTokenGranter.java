@@ -33,7 +33,7 @@ public class DefaultTokenGranter extends AbstractTokenGranter {
   }
 
   @Override
-  protected void validateParameters(Map<String, String> parameters) throws IllegalTokenRequestException {
+  protected Authentication validateParameters(Map<String, String> parameters) throws IllegalTokenRequestException {
     String username = parameters.get("username");
     String password = parameters.get("password");
     Authentication authentication = null;
@@ -54,6 +54,7 @@ public class DefaultTokenGranter extends AbstractTokenGranter {
     if (authentication == null || !authentication.isAuthenticated()) {
       throw new IllegalTokenRequestException("Failed to authenticate user.");
     }
+    return authentication;
   }
 
 }

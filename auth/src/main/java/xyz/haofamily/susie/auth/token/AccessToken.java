@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.Authentication;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -60,15 +62,19 @@ public class AccessToken {
   @JsonIgnore
   private String clientId;
 
-  public static AccessToken from(Map<String, String> parameters) {
+  public static AccessToken from(Authentication authentication) {
     AccessToken accessToken = new AccessToken();
-    accessToken.username = parameters.get("username");
-    if (parameters.containsKey("clientId")) {
-      accessToken.clientId = parameters.get("clientId");
-    }
-    if (parameters.containsKey("scope")) {
-      String[] scopes = parameters.get("scope").split(" ");
-      accessToken.scope = Arrays.stream(scopes).peek(String::trim).collect(Collectors.toSet());
+    accessToken.username = authentication.getName();
+    if (authentication.getDetails() instanceof Map) {
+      @SuppressWarnings("unchecked")
+      Map<String, String> parameters = (Map<String, String>) authentication.getDetails();
+      if (parameters.containsKey("clientId")) {
+        accessToken.clientId = parameters.get("clientId");
+      }
+      if (parameters.containsKey("scope")) {
+        String[] scopes = parameters.get("scope").split(" ");
+        accessToken.scope = Arrays.stream(scopes).peek(String::trim).collect(Collectors.toSet());
+      }
     }
     return accessToken;
   }

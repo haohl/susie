@@ -55,7 +55,7 @@ public class AuthenticationController {
       return token.orElse(ResponseEntity.badRequest().body("Invalid grant type"));
     } catch (IllegalTokenRequestException e) {
       logger.error("Failed to grant token with parameters: {}", parameters);
-      logger.error(e.getLocalizedMessage(), e);
+      logger.debug(e.getLocalizedMessage(), e);
       return ResponseEntity.badRequest().body(e.getLocalizedMessage());
     }
   }
